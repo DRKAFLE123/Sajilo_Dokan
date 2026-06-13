@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-bold">Your Shops</h1>
+        <a href="{% url 'shops:create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            Add New Shop
+        </a>
+    </div>
+    
+    {% if shops %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for shop in shops %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="flex p-6">
+                <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-16 w-16 rounded-full object-cover mr-4">
+                <div class="flex-1">
+                    <h2 class="text-xl font-semibold">{{ shop.name }}</h2>
+                    <p class="text-gray-600 text-sm">{{ shop.products.count }} products</p>
+                </div>
+                <div class="flex space-x-2">
+                    <a href="{% url 'shops:edit' shop.id %}" class="text-blue-600 hover:text-blue-800">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'shops:delete' shop.id %}" class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t px-6 py-4 bg-gray-50">
+                <a href="{% url 'shops:detail' shop.id %}" class="text-blue-600 hover:text-blue-800 mr-4">
+                    View Shop
+                </a>
+                <a href="{% url 'products:create' %}?shop={{ shop.id }}" class="text-blue-600 hover:text-blue-800">
+                    Add Product
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-12 bg-white rounded-lg shadow-md">
+        <p class="text-gray-500 mb-4">You haven't created any shops yet.</p>
+        <a href="{% url 'shops:create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            Create Your First Shop
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

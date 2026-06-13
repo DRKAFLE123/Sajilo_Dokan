@@ -1,0 +1,80 @@
+Created At: 2026-06-10T16:18:44Z
+Completed At: 2026-06-10T16:18:45Z
+File Path: `file:///C:/Users/Dr.Kafle/.gemini/antigravity-ide/brain/4df2304f-ea42-4c61-9184-51a544b85007/implementation_plan.md`
+Total Lines: 336
+Total Bytes: 13990
+Showing lines 1 to 336
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: # Sajilo Dokan — Remaining Work Implementation Plan
+2: 
+3: ## Overview
+4: Completing the Local Connect Marketplace from its current state to a fully functional, production-ready SaaS platform. Work is divided into **6 phases** ordered by priority.
+5: 
+6: ---
+7: 
+8: ## Phase 0 — Critical Bug Fixes (Do First, 1–2 hours)
+9: These are bugs that cause **runtime crashes** or **silent data corruption** right now.
+10: 
+11: ### 🐛 Bug 1 — Wrong field name in `ShopStatsView`
+12: #### [MODIFY] [views.py](file:///e:/Projects/local_connect_marketplace/api/views.py)
+13: - Line ~1177: `inventory_quantity__lt=5` → `stock_quantity__lt=5`
+14: - This causes a `FieldError` whenever any shop owner loads their dashboard
+15: 
+16: ### 🐛 Bug 2 — Voucher `used_count` never increments
+17: #### [MODIFY] [views.py](file:///e:/Projects/local_connect_marketplace/api/views.py)
+18: - In `OrderViewSet.perform_create()`, after saving order: if `voucher` is present, increment `voucher.used_count` and save
+19: - Without this, `max_uses` limit is never enforced
+20: 
+21: ### 🐛 Bug 3 — Missing `drf-yasg` in requirements
+22: #### [MODIFY] [requirements.txt](file:///e:/Projects/local_connect_marketplace/requirements.txt)
+23: - Add `drf-yasg`, `mysqlclient` (or `PyMySQL`), `Pillow` (for ImageField)
+24: 
+25: ### 🐛 Bug 4 — Inventory deduction on order completion
+26: #### [MODIFY] [views.py](file:///e:/Projects/local_connect_marketplace/api/views.py)
+27: - In `OrderViewSet.update_status()`: when status changes to `'completed'` or `'delivere
+<truncated 12047 bytes>
+ttings.py)
+294: - Switch from MySQL to **PostgreSQL** (better for production)
+295: - Add `whitenoise` for static file serving
+296: 
+297: #### [NEW] `Procfile` / `gunicorn.conf.py`
+298: - Gunicorn for HTTP
+299: - Daphne for WebSocket (`ASGI`)
+300: - Or use `uvicorn` with `--workers`
+301: 
+302: #### [NEW] `nginx.conf`
+303: - Reverse proxy: HTTP → Gunicorn, `/ws/` → Daphne
+304: - SSL termination
+305: 
+306: ### 5.2 — Frontend
+307: - Set `NEXT_PUBLIC_API_URL` env variable (replace all hardcoded `http://127.0.0.1:8000`)
+308: - Deploy to **Vercel** (recommended) or build + serve from VPS
+309: - Configure CORS on backend to allow production domain
+310: 
+311: ### 5.3 — CI/CD (Optional but recommended)
+312: - GitHub Actions workflow: on push to `main` → run migrations → deploy
+313: 
+314: ---
+315: 
+316: ## Execution Order (Recommended)
+317: 
+318: ```
+319: Week 1:  Phase 0 (bugs) → Phase 1.1 (POS) → Phase 1.2 (WebSocket)
+320: Week 2:  Phase 1.3 (Payment) → Phase 2.1 (Invoice) → Phase 2.2 (Email)
+321: Week 3:  Phase 2.3 (Wishlist) → Phase 2.4 (Notifications) → Phase 3.1 (Financials)
+322: Week 4:  Phase 3.2 (Disputes) → Phase 4 (Polish/SEO) → Phase 5 (Deploy)
+323: ```
+324: 
+325: ## Open Questions
+326: 
+327: > [!IMPORTANT]
+328: > Please answer these before execution begins — they affect the implementation approach.
+329: 
+330: 1. **Payment Gateway** — Which gateway do you want? Khalti, eSewa, or Stripe (international)?
+331: 2. **Email Provider** — Gmail SMTP (free, simple) or SendGrid/Mailgun (production-grade)?
+332: 3. **Deployment Target** — Vercel (frontend) + VPS (backend), or everything on one VPS?
+333: 4. **Database for Production** — Switch to PostgreSQL, or stay with MySQL?
+334: 5. **POS Offline Mode** — Should the POS work offline (using IndexedDB/Service Worker), or is internet required?
+335: 6. **WebSocket Auth** — Token passed as query string `?token=...` or via a cookie/handshake header?
+336: 
+The above content shows the entire, complete file contents of the requested file.

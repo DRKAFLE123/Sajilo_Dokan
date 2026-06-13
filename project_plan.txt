@@ -1,0 +1,63 @@
+# Local Connect Marketplace - Project Plan & Feature Tracker
+
+## Phase 1: Backend Foundation & Architecture (Status: Completed)
+[x] Initial Django Project Setup (v5.0.6)
+[x] Configure MySQL Database connection
+[x] Setup Custom User Model (Customer and Shop Owner roles)
+[x] Install and configure Django REST Framework
+[x] Setup CORS for frontend communication (localhost:3000)
+[x] Configure Media & Static files handling
+[x] Setup Django Channels & Redis for WebSockets
+
+## Phase 2: Core Data Models & API (Status: Completed)
+[x] User Accounts API (Registration, Login, Token Auth)
+[x] Shop Management Models (Shop, ShopCategory)
+[x] Product Catalog Models (Product, ProductCategory, ProductImage)
+[x] Order Management Models (Order, OrderItem, Statuses)
+[x] Chat & Messaging Models (Conversation, Message)
+[x] Expose robust REST APIs for Shops, Products, and Orders
+[x] Implement model cleanup (resolve duplicate Product models in `shops` and `products` apps)
+[x] Enhance Shop model to include Latitude, Longitude, and live location data for geospatial queries
+
+## Phase 3: Frontend Development (Status: Pending)
+[ ] Initialize React/Next.js frontend application
+[ ] Setup state management (Redux/Zustand) & API client (Axios/React Query)
+[ ] Build User Authentication flows (Login, Register, Role routing)
+[ ] Customer View:
+    [ ] Home page with featured shops and categories
+    [ ] Shop listing and filtering
+    [ ] Product detail pages
+    [ ] Shopping Cart functionality
+    [ ] Checkout & Payment gateway integration (Include "Order Type" option: Delivery vs. Store Pickup)
+    [ ] Customer Order History
+[ ] Shop Owner Dashboard:
+    [ ] Dashboard metrics (sales, views)
+    [ ] Shop profile management
+    [ ] Deep Inventory Management (Organize products by Group, Category, Sub-Category)
+    [ ] Product CRUD (Create, Read, Update, Delete)
+    [ ] Order fulfillment and status updating
+    [ ] Point of Sale (POS) Billing System (Allow shopkeepers to process checkouts in-store)
+
+## Phase 4: Real-time Features (Status: In Progress)
+[x] Backend WebSocket routing and consumers setup
+[ ] Frontend WebSocket connection
+[ ] Real-time Chat UI between Customer and Shop Owner
+[ ] Real-time Order status notifications
+
+## Phase 5: Advanced Features & Refinement (Status: Pending)
+[x] Product Reviews and Ratings system
+[ ] Geospatial Search: Upgrade address field or use live location to filter "Shops within 5km"
+[x] Advanced Search Engine: Robust APIs to find products (e.g., "Shoes") and shops selling them locally
+[x] Automated Inventory Tracking: Automatically deduct item from stock upon successful checkout/billing
+[ ] Invoicing System: Generate and download PDF invoices for completed orders (for both customers and shopkeepers)
+[ ] Email notifications (Order confirmations, welcome emails)
+[ ] SEO optimization & Meta tags
+[ ] Responsive mobile design polishing
+
+## Phase 6: Deployment & Launch (Status: Pending)
+[ ] Configure Production Database (PostgreSQL/MySQL)
+[ ] Set up Gunicorn and Daphne (for WebSockets)
+[ ] Configure Nginx as reverse proxy
+[ ] SSL/TLS Certificate setup (Let's Encrypt)
+[ ] Frontend Build & Deployment (Vercel/Netlify or VPS)
+[ ] Final QA and Launch

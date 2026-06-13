@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">
+        Sign Up as {{ user_type|title }}
+    </h2>
+    
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div>
+            <label class="block text-sm font-medium text-gray-700">
+                {{ field.label }}
+            </label>
+            {{ field }}
+            {% if field.errors %}
+            <p class="mt-1 text-sm text-red-600">{{ field.errors|striptags }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
+            Sign Up
+        </button>
+    </form>
+    
+    <div class="mt-4 text-center">
+        <p class="text-sm text-gray-600">
+            Already have an account? 
+            <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Log in</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

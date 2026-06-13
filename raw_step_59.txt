@@ -1,0 +1,78 @@
+Created At: 2026-06-10T13:29:58Z
+Completed At: 2026-06-10T13:29:58Z
+File Path: `file:///e:/Projects/local_connect_marketplace/api/views.py`
+Total Lines: 1217
+Total Bytes: 54055
+Showing lines 1 to 800
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: from rest_framework import viewsets, permissions, status
+2: from django.utils import timezone
+3: from rest_framework.decorators import action, api_view
+4: from rest_framework.response import Response
+5: from rest_framework.reverse import reverse
+6: from django.shortcuts import get_object_or_404
+7: from accounts.models import CustomUser
+8: from shops.models import Shop, Conversation, Message, ShopKYC, ShopReview, ShopVoucher, SubscriptionPlan, ShopSubscription, PlatformSettings
+9: from products.models import Product, ProductCategory, ProductSubcategory, ProductChildCategory, Brand, ProductVariant, ProductImage, ProductTag, ProductReview
+10: from orders.models import Order
+11: from .serializers import (
+12:     UserSerializer, ShopSerializer, ShopKYCSerializer, ProductSerializer,
+13:     ProductCategorySerializer, ProductSubcategorySerializer, ProductChildCategorySerializer, BrandSerializer,
+14:     ProductTagSerializer, ProductVariantSerializer, ProductImageSerializer, OrderSerializer,
+15:     ConversationSerializer, MessageSerializer,
+16:     ProductReviewSerializer, ShopReviewSerializer, ShopVoucherSerializer,
+17:     SubscriptionPlanSerializer, ShopSubscriptionSerializer, PlatformSettingsSerializer
+18: )
+19: 
+20: # API Root View (standalone function, not inside a class)
+21: @api_view(['GET'])
+22: def api_root(request, format=None):
+23:     return Response({
+24:         'users': reverse('user-list', request=request, format=format),
+25:         'shops': reverse('shop-list', request=request, format=format),
+26:         'products': reverse('product-list'
+<truncated 36236 bytes>
+──────────────
+759: 
+760: from rest_framework.views import APIView as _APIView  # already imported, but keep explicit
+761: import math
+762: 
+763: def _haversine_km(lat1, lon1, lat2, lon2):
+764:     """Return distance in km between two lat/lon points."""
+765:     R = 6371.0
+766:     phi1, phi2 = math.radians(lat1), math.radians(lat2)
+767:     dphi = math.radians(lat2 - lat1)
+768:     dlambda = math.radians(lon2 - lon1)
+769:     a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
+770:     return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+771: 
+772: 
+773: class UnifiedSearchView(_APIView):
+774:     """
+775:     GET /api/search/?q=shoes&lat=27.7172&lng=85.3240&filter=delivery&radius=10&page=1&page_size=20
+776: 
+777:     Returns a ranked mixed feed of Products + Shops.
+778: 
+779:     Scoring formula
+780:     ---------------
+781:     Score = (Relevance × 0.40)
+782:            + (Distance  × 0.25)   # only when lat/lng provided
+783:            + (Rating    × 0.20)
+784:            + (Popularity× 0.10)
+785:            + (Availability × 0.05)
+786: 
+787:     All sub-scores are normalised to [0, 1].
+788:     """
+789:     permission_classes = [permissions.AllowAny]
+790: 
+791:     # ── helpers ────────────────────────────────────────────────
+792:     @staticmethod
+793:     def _relevance(obj, q: str) -> float:
+794:         """Simple keyword relevance: exact name match = 1.0, partial = 0.6, desc only = 0.3."""
+795:         if not q:
+796:             return 1.0
+797:         q = q.lower()
+798:         name = getattr(obj, 'name', '').lower()
+799:         desc = getattr(obj, 'description', '').lower()
+800:         if q == name:
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

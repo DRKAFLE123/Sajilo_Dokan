@@ -1,0 +1,92 @@
+/* static/css/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Base Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    margin: 0;
+    padding: 0;
+}
+
+/* Layout */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem 0;
+}
+
+@media (min-width: 768px) {
+    .dashboard-container {
+        flex-direction: row;
+    }
+}
+
+/* Sidebar */
+.sidebar {
+    width: 100%;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        width: 18rem;
+        position: sticky;
+        top: 1rem;
+        margin-bottom: 0;
+    }
+}
+
+.shop-info {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.shop-logo {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 0.75rem;
+    border: 3px solid #f1f1f1;
+}
+
+.shop-name {
+    font-weight: 600;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.shop-owner {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    margin-bottom: 0.5rem;
+}
+
+.nav-link {
+    display: flex
+}

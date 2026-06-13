@@ -1,0 +1,75 @@
+SAJILO DOKAN SAAS PLATFORM - MASTER IMPLEMENTATION PLAN
+=====================================================
+
+1. ARCHITECTURAL OVERVIEW
+-------------------------
+The platform is divided into three distinct ecosystems to maintain clean permissions:
+- Super Admin Dashboard: Platform owner's control center.
+- Shop Owner Dashboard: Merchant's simplified ERP.
+- Customer Dashboard: Buyer's personal account.
+
+2. ROLE-BASED ACCESS CONTROL (RBAC)
+-----------------------------------
+- Super Admin: Full control over platform, financials, and users.
+- Moderator: Review shops, products, and handle KYC.
+- Support Agent: Handle disputes and customer messages.
+- Shop Owner: Full control over their own store and staff.
+- Shop Staff: Limited access to orders/inventory (managed by owner).
+- Customer: Personal account, orders, and reviews.
+
+3. PHASE-WISE IMPLEMENTATION
+----------------------------
+
+PHASE 1: SAAS FOUNDATION (COMPLETED)
+- Subscription Models: Multi-tier plan architecture (Free, Pro, Premium).
+- Admin Shell: Modern sidebar layout with SD branding.
+- KYC Hub: Identity verification workflow for shop owners.
+- Plan Management: Dynamic pricing and feature list controls.
+
+PHASE 2: ADVANCED CONTROL & MODERATION (COMPLETED)
+- User Management: Search, filter, and suspend any user (Customer/Owner).
+- Product Moderation: Mandatory review queue for new listings.
+- Status Workflow: Draft -> Submitted -> Under Review -> Approved -> Live.
+- Advanced Filtering: Accordion panels for price, location, and rating.
+
+PHASE 2.1: PROMOTION & FEATURING (COMPLETED)
+- Admin Controls: "Feature" toggle for any Shop or Product.
+- Landing Page Slider: Dynamic "Featured" section scrolling right-to-left.
+- Promotion Labels: Custom tags like "Sale", "Special Offer", or "Premium" managed by Admin.
+
+PHASE 3: SHOP OWNER PROFESSIONAL SUITE (COMPLETED)
+- Order Lifecycle: Flow management (Pending -> Packed -> Shipped -> Delivered).
+- Store Analytics: Traffic sources, search terms, and conversion data.
+- Shop Staff: Permissions system for owners to invite employees.
+- Subscription Enforcement: Automatic product limits based on plan.
+- Branding Controls: Store banner, description, and custom policy settings.
+
+PHASE 4: FINANCIALS & SETTINGS
+- Commission Settings: Set percentage per category (e.g., Electronics 8%, Fashion 12%).
+- Payout System: Manual/Automatic payout requests for sellers.
+- Global Settings: Feature toggles (Turn Chat/COD/Reviews ON/OFF globally).
+- Branding: Master control for platform logos, theme colors, and email templates.
+
+PHASE 5: CUSTOMER EXPERIENCE & NOTIFICATIONS
+- Notification Center: Real-time web/push alerts for all roles.
+- Dispute Center: System for handling returns, refunds, and complaints.
+- Wishlist & Follow: Save products and follow favorite stores.
+- Smart Search: Keyword-based unified search with ranking.
+
+4. UI/UX STANDARDS
+------------------
+- Desktop: Left Sidebar + Top Search + Main Content.
+- Mobile: Bottom Navigation Bar (optimized for shop owners on the go).
+- Design: Clean, structured "Sajilo" style using Indigo/Gray palette.
+
+5. ENTITY & WORKFLOW DEFINITIONS
+--------------------------------
+- Shop: Moderated entry (Draft to Live).
+- Product: Moderated listing (Review queue).
+- Order: Multi-step tracking (Customer <-> Seller <-> Admin).
+- Subscription: Automated tiering (Upgrade/Downgrade logic).
+
+=====================================================
+PLAN CREATED: 2026-05-11
+STATUS: ACTIVE
+=====================================================

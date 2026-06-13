@@ -1,0 +1,23 @@
+Created At: 2026-06-10T15:13:57Z
+Completed At: 2026-06-10T15:13:57Z
+File Path: `file:///C:/Users/Dr.Kafle/.gemini/antigravity-ide/brain/4df2304f-ea42-4c61-9184-51a544b85007/task.md`
+Total Lines: 15
+Total Bytes: 717
+Showing lines 1 to 15
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+1: # Sajilo Dokan Project Checklist
+2: 
+3: ## Phase 0 — Critical Bug Fixes
+4: - [ ] Bug 1 — Wrong field name in `ShopStatsView` in `api/views.py`
+5: - [ ] Bug 2 — Voucher `used_count` never increments in `api/views.py`
+6: - [ ] Bug 3 — Missing packages in `requirements.txt` (`drf-yasg`, `mysqlclient`/`PyMySQL`, `Pillow`)
+7: - [ ] Bug 4 — Inventory deduction on order completion/delivery in `api/views.py`
+8: 
+9: ## Subsequent Phases
+10: - [ ] Phase 1 — High Priority Features (POS, WebSockets, Payments)
+11: - [ ] Phase 2 — Medium Priority Features (PDF Invoices, Emails, Wishlist, Notifications, Promotions)
+12: - [ ] Phase 3 — SaaS Admin Gaps (Commission, Disputes, Branding)
+13: - [ ] Phase 4 — Polish & SEO
+14: - [ ] Phase 5 — Deployment
+15: 
+The above content shows the entire, complete file contents of the requested file.

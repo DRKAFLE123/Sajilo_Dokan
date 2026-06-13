@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Shop Info -->
+        <div class="md:w-1/3">
+            <div class="bg-white rounded-lg shadow-md p-6 sticky top-4">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="{{ shop.logo.url }}" alt="{{ shop.name }}" class="h-32 w-32 rounded-full object-cover mb-4">
+                    <h1 class="text-2xl font-bold">{{ shop.name }}</h1>
+                    <p class="text-gray-600">{{ shop.address }}</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="font-semibold">About</h3>
+                        <p class="text-gray-700">{{ shop.description }}</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold">Contact</h3>
+                        <p class="text-gray-700">{{ shop.phone_number }}</p>
+                        <p class="text-gray-700">{{ shop.email }}</p>
+                    </div>
+                    
+                    {% if request.user == shop.owner %}
+                    <a href="{% url 'shops:dashboard' %}" class="block mt-4 bg-blue-600 text-white text-center py-2 rounded-md hover:bg-blue-700">
+                        Manage Shop
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Products -->
+        <div class="md:w-2/3">
+            <h2 class="text-xl font-semibold mb-6">Available Products</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {% for product in shop.products.all %}
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="h-48 overflow-hidden">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold">{{ product.name }}</h3>
+                        <p class="text-blue-600 font-bold my-2">Rs. {{ product.price }}</p>
+                        <a href="{% url 'products:detail' product.id %}" class="text-blue-600 hover:text-blue-800 text-sm">
+                            View Product →
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-2 text-center py-12">
+                    <p class="text-gray-500">This shop hasn't added any products yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
