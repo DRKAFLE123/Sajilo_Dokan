@@ -7,21 +7,34 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-async function getBazaarDetails(id: string) {
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+
+async function fetchFromApi(endpoint: string, fallback: any) {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/market-hubs/${id}/`, { cache: "no-store" });
-    if (!res.ok) return null;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
+    if (!res.ok) return fallback;
     return await res.json();
-  } catch { return null; }
+  } catch (err) {
+    console.warn(`Fetch to ${endpoint} timed out or failed:`, err);
+    return fallback;
+  }
+}
+
+async function getBazaarDetails(id: string) {
+  return fetchFromApi(`/market-hubs/${id}/`, null);
 }
 
 async function getBazaarShops(id: string) {
-  try {
-    const res = await fetch(`http://127.0.0.1:8000/api/shops/?market_hub=${id}`, { cache: "no-store" });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.results || []);
-  } catch { return []; }
+  const res = await fetchFromApi(`/shops/?market_hub=${id}`, []);
+  return Array.isArray(res) ? res : (res.results || []);
 }
 
 export default async function BazaarStreetPage(props: PageProps) {

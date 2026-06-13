@@ -5,21 +5,34 @@ import { MapPin, Phone, MessageCircle, ShieldCheck } from 'lucide-react';
 import FollowButton from './FollowButton';
 import ReviewsSection from '@/components/ReviewsSection';
 
-async function getShop(id: string) {
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+
+async function fetchFromApi(endpoint: string, fallback: any) {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/shops/${id}/`, { cache: 'no-store' });
-    if (!res.ok) return null;
-    return res.json();
-  } catch { return null; }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
+    if (!res.ok) return fallback;
+    return await res.json();
+  } catch (err) {
+    console.warn(`Fetch to ${endpoint} timed out or failed:`, err);
+    return fallback;
+  }
+}
+
+async function getShop(id: string) {
+  return fetchFromApi(`/shops/${id}/`, null);
 }
 
 async function getShopProducts(shopId: string) {
-  try {
-    const res = await fetch(`http://127.0.0.1:8000/api/products/?shop_id=${shopId}`, { cache: 'no-store' });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.results || []);
-  } catch { return []; }
+  const res = await fetchFromApi(`/products/?shop_id=${shopId}`, []);
+  return Array.isArray(res) ? res : (res.results || []);
 }
 
 export default async function ShopProfilePage({ params }: { params: Promise<{ id: string }> }) {

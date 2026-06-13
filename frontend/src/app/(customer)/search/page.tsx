@@ -6,6 +6,27 @@ import SearchFilterBar from "@/components/SearchFilterBar";
 
 interface Category { id: number; name: string; }
 
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+
+async function fetchFromApi(endpoint: string, fallback: any, forceCache = false) {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      cache: forceCache ? "force-cache" : "no-store",
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
+    if (!res.ok) return fallback;
+    return await res.json();
+  } catch (err) {
+    console.warn(`Fetch to ${endpoint} timed out or failed:`, err);
+    return fallback;
+  }
+}
+
 async function getUnifiedResults(params: { [key: string]: string | undefined }) {
   const p = new URLSearchParams();
   if (params.q)           p.set("q",           params.q);
@@ -20,33 +41,20 @@ async function getUnifiedResults(params: { [key: string]: string | undefined }) 
   if (params.page)        p.set("page",          params.page);
   p.set("page_size", "24");
 
-  try {
-    const res = await fetch(`http://127.0.0.1:8000/api/search/?${p.toString()}`, { cache: "no-store" });
-    if (!res.ok) return { results: [], count: 0, page: 1, pages: 1, price_range: { min: 0, max: 0 } };
-    return await res.json();
-  } catch {
-    return { results: [], count: 0, page: 1, pages: 1, price_range: { min: 0, max: 0 } };
-  }
+  const fallback = { results: [], count: 0, page: 1, pages: 1, price_range: { min: 0, max: 0 } };
+  return fetchFromApi(`/search/?${p.toString()}`, fallback);
 }
 
 async function getCategories() {
-  try {
-    const res = await fetch("http://127.0.0.1:8000/api/product-categories/", { cache: "force-cache" });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.results || []);
-  } catch { return []; }
+  const res = await fetchFromApi('/product-categories/', [], true);
+  return Array.isArray(res) ? res : (res.results || []);
 }
 
 async function getBazaars(params: { [key: string]: string | undefined }) {
   const p = new URLSearchParams();
   if (params.q) p.set("q", params.q);
-  try {
-    const res = await fetch(`http://127.0.0.1:8000/api/market-hubs/?${p.toString()}`, { cache: "no-store" });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.results || []);
-  } catch { return []; }
+  const res = await fetchFromApi(`/market-hubs/?${p.toString()}`, []);
+  return Array.isArray(res) ? res : (res.results || []);
 }
 
 function CategorySidebar({ categories, activeId, q, filter, type, sort }: {

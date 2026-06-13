@@ -4,31 +4,38 @@ import ProductCard, { Product } from '@/components/ProductCard';
 import FeaturedScroller from '@/components/FeaturedScroller';
 import { MapPin, Zap, ShieldCheck, Star, Package } from 'lucide-react';
 
-async function getFeaturedShops() {
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+
+async function fetchFromApi(endpoint: string) {
   try {
-    const res = await fetch('http://127.0.0.1:8000/api/shops/?is_featured=true', { cache: 'no-store' });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
     if (!res.ok) return [];
     const data = await res.json();
     return Array.isArray(data) ? data : (data.results || []);
-  } catch { return []; }
+  } catch (err) {
+    console.warn(`Fetch to ${endpoint} timed out or failed:`, err);
+    return [];
+  }
+}
+
+async function getFeaturedShops() {
+  return fetchFromApi('/shops/?is_featured=true');
 }
 
 async function getFeaturedProducts() {
-  try {
-    const res = await fetch('http://127.0.0.1:8000/api/products/?is_featured=true', { cache: 'no-store' });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.results || []);
-  } catch { return []; }
+  return fetchFromApi('/products/?is_featured=true');
 }
 
 async function getSponsoredProducts() {
-  try {
-    const res = await fetch('http://127.0.0.1:8000/api/products/?is_sponsored=true', { cache: 'no-store' });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.results || []);
-  } catch { return []; }
+  return fetchFromApi('/products/?is_sponsored=true');
 }
 
 const QUICK_LINKS = [

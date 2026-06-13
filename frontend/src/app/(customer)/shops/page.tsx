@@ -4,26 +4,34 @@ import { Store, Package } from 'lucide-react';
 import ProductCard from '@/components/ProductCard';
 import ShopCard, { Shop } from '@/components/ShopCard';
 
-async function getShops(): Promise<Shop[]> {
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+
+async function fetchFromApi(endpoint: string) {
   try {
-    const res = await fetch('http://127.0.0.1:8000/api/shops/', { cache: 'no-store' });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
     if (!res.ok) return [];
     const data = await res.json();
     return Array.isArray(data) ? data : (data.results || []);
-  } catch {
+  } catch (err) {
+    console.warn(`Fetch to ${endpoint} timed out or failed:`, err);
     return [];
   }
 }
 
+async function getShops(): Promise<Shop[]> {
+  return fetchFromApi('/shops/');
+}
+
 async function getProducts() {
-  try {
-    const res = await fetch('http://127.0.0.1:8000/api/products/', { cache: 'no-store' });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : (data.results || []);
-  } catch {
-    return [];
-  }
+  return fetchFromApi('/products/');
 }
 
 export default async function ShopsPage(props: {

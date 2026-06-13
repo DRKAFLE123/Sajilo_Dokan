@@ -5,12 +5,23 @@ import ProductActions from './ProductActions';
 import { ShoppingBag, ChevronRight, Tag, ShieldCheck, Truck } from 'lucide-react';
 import ReviewsSection from '@/components/ReviewsSection';
 
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api').replace(/\/$/, '');
+
 async function getProduct(id: string) {
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/products/${id}/`, { cache: 'no-store' });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    
+    const res = await fetch(`${API_URL}/products/${id}/`, {
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    
     if (!res.ok) return null;
-    return res.json();
-  } catch (e) {
+    return await res.json();
+  } catch (err) {
+    console.warn(`Fetch to /products/${id}/ timed out or failed:`, err);
     return null;
   }
 }
