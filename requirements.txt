@@ -8,8 +8,6 @@ django-crispy-forms==2.1
 crispy-tailwind==0.5.0
 drf-yasg==1.21.10
 Pillow==10.3.0
-mysqlclient==2.2.4
-pymysql==1.1.1
 requests==2.32.3
 reportlab==4.2.2
 gunicorn==22.0.0

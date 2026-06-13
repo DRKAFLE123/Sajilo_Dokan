@@ -72,15 +72,8 @@ import urllib.parse as urlparse
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'localconnect',  # Must match the database you created
-        'USER': 'root',
-        'PASSWORD': '',  # Default XAMPP MySQL has empty password
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
