@@ -145,7 +145,16 @@ REST_FRAMEWORK = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://sajilo-dokan-nepal.vercel.app",
 ]
+
+# Allow adding extra CORS origins from environment variable (comma-separated)
+CORS_ORIGINS_ENV = os.environ.get('CORS_ALLOWED_ORIGINS')
+if CORS_ORIGINS_ENV:
+    for origin in CORS_ORIGINS_ENV.split(','):
+        clean_origin = origin.strip()
+        if clean_origin and clean_origin not in CORS_ALLOWED_ORIGINS:
+            CORS_ALLOWED_ORIGINS.append(clean_origin)
 
 # Channels
 CHANNEL_LAYERS = {
