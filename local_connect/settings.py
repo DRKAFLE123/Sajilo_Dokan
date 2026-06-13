@@ -66,6 +66,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'local_connect.wsgi.application'
 ASGI_APPLICATION = 'local_connect.asgi.application'
 
+import urllib.parse as urlparse
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -79,6 +81,21 @@ DATABASES = {
         }
     }
 }
+
+# Override with environment variable DATABASE_URL if present (e.g., Neon Postgres on Render)
+if os.environ.get('DATABASE_URL'):
+    db_url = os.environ.get('DATABASE_URL')
+    if db_url.startswith('postgres://') or db_url.startswith('postgresql://'):
+        url = urlparse.urlparse(db_url)
+        DATABASES['default'] = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': url.path[1:],
+            'USER': url.username,
+            'PASSWORD': url.password,
+            'HOST': url.hostname,
+            'PORT': url.port or 5432,
+            'CONN_MAX_AGE': 60,  # Keep-warm optimization for serverless Neon database compute nodes
+        }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
