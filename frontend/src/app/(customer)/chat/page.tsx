@@ -35,7 +35,7 @@ interface Conversation {
   unread_count: number;
 }
 
-export default function CustomerChatPage() {
+function ChatContent() {
   const { isAuthenticated, isLoading, user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -529,4 +529,14 @@ export default function CustomerChatPage() {
     </div>
   </div>
 );
+}
+
+import { Suspense } from 'react';
+
+export default function CustomerChatPage() {
+  return (
+    <Suspense fallback={<div className="flex-1 flex items-center justify-center min-h-[60vh]">Loading chat...</div>}>
+      <ChatContent />
+    </Suspense>
+  );
 }
